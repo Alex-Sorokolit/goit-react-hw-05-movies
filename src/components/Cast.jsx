@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCast } from 'services/Api';
 import { Galery } from './Galery.styled';
+import { ActorImageWrapper } from './Cast.styled';
 
 export const Cast = () => {
   const { movieId } = useParams();
@@ -30,13 +31,23 @@ export const Cast = () => {
       <Galery>
         {castData.map(cast => (
           <li key={cast.id}>
-            <img
-              src={`https://image.tmdb.org/t/p/w500/${cast.profile_path}`}
-              alt={cast.character}
-              width={200}
-            ></img>
-            <p>Character: {cast.character}</p>
-            <p>Name: {cast.original_name}</p>
+            <ActorImageWrapper>
+              <img
+                src={
+                  cast.profile_path !== null
+                    ? `https://image.tmdb.org/t/p/w500/${cast.profile_path}`
+                    : 'https://cdn.pixabay.com/photo/2014/04/03/11/50/drama-312318_960_720.png'
+                }
+                alt={cast.character}
+                width={200}
+              ></img>
+            </ActorImageWrapper>
+            <p>
+              <b>Character:</b> {cast.character}
+            </p>
+            <p>
+              <b>Name:</b> {cast.original_name}
+            </p>
           </li>
         ))}
       </Galery>

@@ -2,6 +2,9 @@ import { useState, useEffect } from 'react';
 import { getTrending } from '../../services/Api';
 import { StyledLink } from '../../components/Link.styled';
 import { Galery } from 'components/Galery.styled';
+import { Main } from './Home.styled';
+import { Title } from './Home.styled';
+
 const Home = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -22,16 +25,6 @@ const Home = () => {
           return;
         }
 
-        // // Забираємо тільки ті дані які потрібні
-        // const trendings = imagesData.hits.map(
-        //   ({ id, tags, webformatURL, largeImageURL }) => ({
-        //     id,
-        //     tags,
-        //     webformatURL,
-        //     largeImageURL,
-        //   })
-        // );
-
         // Записуємо дані у стейт
         setTrends(trendings);
         // setTotal(totalHits);
@@ -49,8 +42,8 @@ const Home = () => {
   }
 
   return (
-    <div>
-      <h2>Trending today</h2>
+    <Main>
+      {/* <Title>Trending today</Title> */}
       <Galery>
         {trends.map(trend => (
           <li key={trend.id}>
@@ -68,7 +61,7 @@ const Home = () => {
       {error && <p>{error}</p>}
       {isLoading && <p>Loading...</p>}
       {message && <p>{message}</p>}
-    </div>
+    </Main>
   );
 };
 

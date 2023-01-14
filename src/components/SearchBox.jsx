@@ -1,12 +1,16 @@
-export const SearchBox = ({ value, onSubmit, onChange }) => {
-  const handleSubmit = event => {
-    event.preventDefault();
-  };
+import { CgSearch } from 'react-icons/cg';
+import {
+  SearchWrapper,
+  SearchForm,
+  SearchButton,
+  SearchInput,
+} from './SearchBox.styled';
 
+export const SearchBox = ({ value, onSubmit, onChange }) => {
   return (
-    <div style={{ display: 'flex' }}>
-      <form onSubmit={onSubmit}>
-        <input
+    <SearchWrapper>
+      <SearchForm onSubmit={onSubmit}>
+        <SearchInput
           type="text"
           value={value}
           autoComplete="off"
@@ -14,10 +18,12 @@ export const SearchBox = ({ value, onSubmit, onChange }) => {
           placeholder="Search movies"
           onChange={event => onChange(event.target.value)}
         />
-      </form>
-      <button type="submit" onClick={handleSubmit}>
-        <span>Search</span>
-      </button>
-    </div>
+        <SearchButton type="submit" onClick={onSubmit}>
+          <span>
+            <CgSearch />
+          </span>
+        </SearchButton>
+      </SearchForm>
+    </SearchWrapper>
   );
 };

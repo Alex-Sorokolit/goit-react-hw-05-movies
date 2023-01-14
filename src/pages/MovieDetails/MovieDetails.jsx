@@ -2,7 +2,13 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getMovieDetails } from 'services/Api';
 import { Outlet } from 'react-router-dom';
-import { StyledLink } from 'components/Link.styled';
+import {
+  LinkBtn,
+  ListItem,
+  GenresItem,
+  MovieTitle,
+  CardWrapper,
+} from './MovieDetails.styled';
 
 export const MovieDetails = () => {
   const { movieId } = useParams();
@@ -30,45 +36,42 @@ export const MovieDetails = () => {
   // console.log(movieData);
   return (
     <main>
-      <div style={{ display: 'flex', padding: '20px' }}>
+      <CardWrapper>
         {movieData && (
           <img
-            src={`https://image.tmdb.org/t/p/w500/${poster_path}`}
-            width="200"
+            src={
+              poster_path !== null
+                ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+                : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
+            }
+            width="300"
             alt={original_title}
           ></img>
         )}
-        <div className="movie__info" style={{ padding: '20px' }}>
-          <h2>{original_title}</h2>
-          <p>Raiting: {vote_average.toFixed(1)}</p>
-          <h3>Overview:</h3>
-          <p>{overview}</p>
-          <h3>Genres:</h3>
-          <ul>
-            {genres.map(genre => (
-              <li
-                key={genre.id}
-                style={{
-                  display: 'inline',
-                  marginLeft: '15px',
-                  color: 'orangered',
-                }}
-              >
-                {genre.name}
-              </li>
-            ))}
-          </ul>
+        <div className="movie__info" style={{ background: 'white' }}>
+          <MovieTitle>{original_title}</MovieTitle>
+          <div style={{ padding: '0 20px' }}>
+            <p>Raiting: {vote_average.toFixed(1)}</p>
+            <h3>Overview:</h3>
+            <p>{overview}</p>
+            <h3>Genres:</h3>
+            <ul style={{ display: 'flex' }}>
+              {genres.map(genre => (
+                <GenresItem key={genre.id}>{genre.name}</GenresItem>
+              ))}
+            </ul>
+          </div>
         </div>
-      </div>
-      <div className="movie__additianal">
+      </CardWrapper>
+      <div className="movie__additianal" style={{ padding: '0 40px' }}>
         <h3>Additional information:</h3>
-        <ul>
-          <li>
-            <StyledLink to={'cast'}>Cast</StyledLink>
-          </li>
-          <li>
-            <StyledLink to={'reviews'}>Reviews</StyledLink>
-          </li>
+        <ul style={{ display: 'flex', marginBottom: '20px' }}>
+          <ListItem>
+            <LinkBtn to={'cast'}>Cast</LinkBtn>
+          </ListItem>
+          <ListItem>
+            <LinkBtn to={'reviews'}>Reviews</LinkBtn>
+          </ListItem>
         </ul>
         <Outlet />
       </div>

@@ -27,7 +27,7 @@ export async function getSearchMovie(searchQuery, page) {
 export async function getMovieDetails(movieId) {
   try {
     const response = await axios.get(`movie/${movieId}?api_key=${key}`);
-    console.log(response.data);
+    // console.log(response.data);
     return response.data;
   } catch (error) {
     console.log(error);

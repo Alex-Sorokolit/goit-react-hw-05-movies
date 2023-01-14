@@ -4,16 +4,16 @@ import { MovieDetails } from 'pages/MovieDetails/MovieDetails';
 import { Routes, Route } from 'react-router-dom';
 import Home from '../../pages/Home/Home';
 import Movies from '../../pages/Movies/Movies';
-import NavItem from './App.styled';
+import { NavList, NavItem } from './App.styled';
 import { Toaster } from 'react-hot-toast';
 
 export const App = () => {
   return (
     <div>
-      <nav style={{ background: '#0D1117', padding: '5px' }}>
+      <NavList>
         <NavItem to="/">Home</NavItem>
         <NavItem to="/movies">Movies</NavItem>
-      </nav>
+      </NavList>
 
       <Routes>
         <Route path="/" element={<Home />} />

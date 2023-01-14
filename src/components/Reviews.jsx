@@ -34,7 +34,7 @@ export const Reviews = () => {
           ))}
         </ul>
       ) : (
-        <p>За вашим запитом нічого не знайдено</p>
+        <p style={{ fontSize: '20px', color: 'red' }}>Немає відгуків</p>
       )}
     </div>
   );

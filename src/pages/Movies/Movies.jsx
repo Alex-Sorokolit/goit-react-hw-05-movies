@@ -6,6 +6,7 @@ import { Galery } from 'components/Galery.styled';
 import { useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import Button from 'components/LoadMoreBtn';
+import { Main, GaleryItem, Cover } from './Movies.styled';
 
 const Movies = () => {
   const [movies, setMovies] = useState([]);
@@ -35,8 +36,8 @@ const Movies = () => {
 
         // Показуємо кількість результатів при першому запиті
         if (page === 1) {
-          console.log(`Знайдено ${total_results} результатів`);
-          toast.success(`Знайдено ${total_results} результатів`);
+          // console.log(`Знайдено ${total_results} фільмів`);
+          toast.success(`Знайдено ${total_results} фільмів`);
         }
       } catch (error) {
         console.log(error);
@@ -56,6 +57,13 @@ const Movies = () => {
   // при sabmit оновлює query
   const onSubmit = event => {
     event.preventDefault();
+    console.log(queryParams);
+
+    if (queryParams === query) {
+      toast.error(`Проявляйте креатив, пришіть різні запити`);
+      return;
+    }
+
     setQuery(queryParams);
     setMovies([]);
     setPage(1);
@@ -67,7 +75,7 @@ const Movies = () => {
   };
 
   return (
-    <div>
+    <Main>
       <SearchBox
         onSubmit={onSubmit}
         value={queryParams}
@@ -76,22 +84,26 @@ const Movies = () => {
       <Galery>
         {movies.length > 0 &&
           movies.map(movie => (
-            <li key={movie.id}>
+            <GaleryItem key={movie.id}>
               <StyledLink to={`${movie.id}`}>
                 {/* <p>{movie.original_title}</p> */}
-                <img
-                  src={`https://image.tmdb.org/t/p/w500/${movie.poster_path}`}
+                <Cover
+                  src={
+                    movie.poster_path !== null
+                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                      : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
+                  }
                   width="200"
                   alt={movie.original_title}
-                ></img>
+                ></Cover>
               </StyledLink>
-            </li>
+            </GaleryItem>
           ))}
       </Galery>
       {movies.length > 0 && total > movies.length && (
         <Button type="button" loadMore={loadMore} />
       )}
-    </div>
+    </Main>
   );
 };
 
@@ -101,3 +113,4 @@ export default Movies;
 // Вивести повідомлення при пустому запиті
 // Повідомлення якщо немає результатів
 // Зробити заглушку для зображення
+// При поверненні повинен бути список фільмів
