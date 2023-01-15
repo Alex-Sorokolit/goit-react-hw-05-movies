@@ -93,7 +93,7 @@ const Movies = () => {
       />
 
       <CardSet>
-        {movies.length > 0 &&
+        {movies.length() > 0 &&
           movies.map(movie => (
             <CardItem key={movie.id}>
               <StyledLink to={`${movie.id}`} state={{ from: location }}>
