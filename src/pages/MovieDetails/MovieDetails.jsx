@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useLocation, useParams } from 'react-router-dom';
 import { getMovieDetails } from 'services/Api';
 import { Outlet } from 'react-router-dom';
 import {
@@ -10,9 +10,11 @@ import {
   CardWrapper,
 } from './MovieDetails.styled';
 
-export const MovieDetails = () => {
+const MovieDetails = () => {
   const { movieId } = useParams();
   const [movieData, setMovieData] = useState(null);
+  const location = useLocation();
+  const backLinkHref = location.state?.from ?? '/';
 
   useEffect(() => {
     async function Fetch(query) {
@@ -34,38 +36,50 @@ export const MovieDetails = () => {
   const { poster_path, original_title, vote_average, overview, genres } =
     movieData;
   // console.log(movieData);
+
   return (
     <main>
-      <CardWrapper>
-        {movieData && (
-          <img
-            src={
-              poster_path !== null
-                ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-                : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
-            }
-            width="300"
-            alt={original_title}
-          ></img>
-        )}
-        <div className="movie__info" style={{ background: 'white' }}>
-          <MovieTitle>{original_title}</MovieTitle>
-          <div style={{ padding: '0 20px' }}>
-            <p>Raiting: {vote_average.toFixed(1)}</p>
-            <h3>Overview:</h3>
-            <p>{overview}</p>
-            <h3>Genres:</h3>
-            <ul style={{ display: 'flex' }}>
-              {genres.map(genre => (
-                <GenresItem key={genre.id}>{genre.name}</GenresItem>
-              ))}
-            </ul>
+      <div>
+        <CardWrapper>
+          {movieData && (
+            <img
+              src={
+                poster_path !== null
+                  ? `https://image.tmdb.org/t/p/w500/${poster_path}`
+                  : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
+              }
+              width="300"
+              alt={original_title}
+            ></img>
+          )}
+          <div
+            className="movie__info"
+            style={{ background: 'white', maxWidth: '1600px' }}
+          >
+            <MovieTitle>{original_title}</MovieTitle>
+            <div style={{ padding: '0 20px' }}>
+              <p>Raiting: {vote_average.toFixed(1)}</p>
+              <h3>Overview:</h3>
+              <p>{overview}</p>
+              <h3>Genres:</h3>
+              <ul style={{ display: 'flex' }}>
+                {genres.map(genre => (
+                  <GenresItem key={genre.id}>{genre.name}</GenresItem>
+                ))}
+              </ul>
+            </div>
           </div>
-        </div>
-      </CardWrapper>
-      <div className="movie__additianal" style={{ padding: '0 40px' }}>
-        <h3>Additional information:</h3>
+        </CardWrapper>
+      </div>
+      <div
+        className="movie__additianal"
+        style={{ padding: '0 40px', maxWidth: '1600px' }}
+      >
+        {/* <h3>Additional information:</h3> */}
         <ul style={{ display: 'flex', marginBottom: '20px' }}>
+          <ListItem>
+            <LinkBtn to={backLinkHref}>Go Back</LinkBtn>
+          </ListItem>
           <ListItem>
             <LinkBtn to={'cast'}>Cast</LinkBtn>
           </ListItem>
@@ -78,5 +92,4 @@ export const MovieDetails = () => {
     </main>
   );
 };
-
-// Кнопка back to list
+export default MovieDetails;

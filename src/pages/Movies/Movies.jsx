@@ -2,19 +2,21 @@ import { SearchBox } from 'components/SearchBox';
 import { useState, useEffect } from 'react';
 import { getSearchMovie } from 'services/Api';
 import { StyledLink } from 'components/Link.styled';
-import { Galery } from 'components/Galery.styled';
-import { useSearchParams } from 'react-router-dom';
+import { CardSet, CardItem } from 'components/CardSet.styled';
+import { useLocation, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
 import Button from 'components/LoadMoreBtn';
-import { Main, GaleryItem, Cover } from './Movies.styled';
+import { save, load } from 'components/localStorageMethods';
+import { Main, ImageWrapper, Cover } from './Movies.styled';
 
 const Movies = () => {
-  const [movies, setMovies] = useState([]);
+  const [movies, setMovies] = useState(load('movies'));
   const [query, setQuery] = useState(''); // на запит передаємо query а не queryParams щоб запит відбувався тільки при submit
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams(); // записує searchQuery в url
   const queryParams = searchParams.get('query') ?? ''; // отримує запит із url
   const [total, setTotal] = useState(0);
+  const location = useLocation();
 
   // якщо query змінилось, робимо запит
   useEffect(() => {
@@ -30,13 +32,13 @@ const Movies = () => {
 
         // запис даних у стейт
         setMovies(prevMovies => [...prevMovies, ...results]);
+
         // console.log(movies);
 
         setTotal(total_results);
 
         // Показуємо кількість результатів при першому запиті
         if (page === 1) {
-          // console.log(`Знайдено ${total_results} фільмів`);
           toast.success(`Знайдено ${total_results} фільмів`);
         }
       } catch (error) {
@@ -57,7 +59,12 @@ const Movies = () => {
   // при sabmit оновлює query
   const onSubmit = event => {
     event.preventDefault();
-    console.log(queryParams);
+    // console.log(queryParams);
+
+    if (queryParams === '') {
+      toast.error('Напишіть назву фільму в поле пошуку');
+      return;
+    }
 
     if (queryParams === query) {
       toast.error(`Проявляйте креатив, пришіть різні запити`);
@@ -71,8 +78,11 @@ const Movies = () => {
 
   const loadMore = () => {
     setPage(prevPage => prevPage + 1);
-    console.log(page);
+    // console.log(page);
   };
+  if (movies !== []) {
+    save('movies', movies);
+  }
 
   return (
     <Main>
@@ -81,25 +91,29 @@ const Movies = () => {
         value={queryParams}
         onChange={handleInputChange}
       />
-      <Galery>
+
+      <CardSet>
         {movies.length > 0 &&
           movies.map(movie => (
-            <GaleryItem key={movie.id}>
-              <StyledLink to={`${movie.id}`}>
+            <CardItem key={movie.id}>
+              <StyledLink to={`${movie.id}`} state={{ from: location }}>
                 {/* <p>{movie.original_title}</p> */}
-                <Cover
-                  src={
-                    movie.poster_path !== null
-                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                      : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
-                  }
-                  width="200"
-                  alt={movie.original_title}
-                ></Cover>
+                <ImageWrapper>
+                  <Cover
+                    src={
+                      movie.poster_path !== null
+                        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                        : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
+                    }
+                    width="200"
+                    alt={movie.original_title}
+                  ></Cover>
+                </ImageWrapper>
               </StyledLink>
-            </GaleryItem>
+            </CardItem>
           ))}
-      </Galery>
+      </CardSet>
+
       {movies.length > 0 && total > movies.length && (
         <Button type="button" loadMore={loadMore} />
       )}
@@ -109,8 +123,4 @@ const Movies = () => {
 
 export default Movies;
 
-// додати кнопку loadMore
-// Вивести повідомлення при пустому запиті
-// Повідомлення якщо немає результатів
-// Зробити заглушку для зображення
 // При поверненні повинен бути список фільмів

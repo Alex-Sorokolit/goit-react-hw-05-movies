@@ -1,15 +1,16 @@
 import { useState, useEffect } from 'react';
 import { getTrending } from '../../services/Api';
 import { StyledLink } from '../../components/Link.styled';
-import { Galery } from 'components/Galery.styled';
+import { CardSet } from 'components/CardSet.styled';
 import { Main } from './Home.styled';
-import { Title } from './Home.styled';
+import { useLocation } from 'react-router-dom';
 
 const Home = () => {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [message, setMessage] = useState('');
   const [trends, setTrends] = useState([]);
+  const location = useLocation();
 
   useEffect(() => {
     async function Fetch() {
@@ -43,11 +44,10 @@ const Home = () => {
 
   return (
     <Main>
-      {/* <Title>Trending today</Title> */}
-      <Galery>
+      <CardSet>
         {trends.map(trend => (
           <li key={trend.id}>
-            <StyledLink to={`movies/${trend.id}`}>
+            <StyledLink to={`movies/${trend.id}`} state={{ from: location }}>
               {/* <p>{trend.original_title}</p> */}
               <img
                 src={`https://image.tmdb.org/t/p/w500/${trend.poster_path}`}
@@ -57,7 +57,7 @@ const Home = () => {
             </StyledLink>
           </li>
         ))}
-      </Galery>
+      </CardSet>
       {error && <p>{error}</p>}
       {isLoading && <p>Loading...</p>}
       {message && <p>{message}</p>}
@@ -67,4 +67,4 @@ const Home = () => {
 
 export default Home;
 
-// Додати пагінацію
+// Асинхронне завантаження коду

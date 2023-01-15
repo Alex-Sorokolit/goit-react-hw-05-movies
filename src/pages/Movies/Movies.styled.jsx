@@ -10,7 +10,18 @@ export const Main = styled.div`
 export const GaleryItem = styled.li`
   width: 200px;
   height: 300px;
+  background-color: grey;
+`;
+
+export const ImageWrapper = styled.div`
+  width: 200px;
+  height: 300px;
 `;
 export const Cover = styled.img`
-  object-position: 50% 50%;
+  height: 100%;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  object-fit: cover;
 `;

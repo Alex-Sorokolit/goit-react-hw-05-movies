@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCast } from 'services/Api';
-import { Galery } from './Galery.styled';
-import { ActorImageWrapper } from './Cast.styled';
+import { CardSet, CardItem } from './CardSet.styled';
 
 export const Cast = () => {
   const { movieId } = useParams();
@@ -28,10 +27,10 @@ export const Cast = () => {
   // console.log(castData);
   return (
     <div>
-      <Galery>
+      <CardSet>
         {castData.map(cast => (
-          <li key={cast.id}>
-            <ActorImageWrapper>
+          <CardItem key={cast.id}>
+            <div>
               <img
                 src={
                   cast.profile_path !== null
@@ -41,16 +40,18 @@ export const Cast = () => {
                 alt={cast.character}
                 width={200}
               ></img>
-            </ActorImageWrapper>
-            <p>
-              <b>Character:</b> {cast.character}
-            </p>
-            <p>
-              <b>Name:</b> {cast.original_name}
-            </p>
-          </li>
+            </div>
+            <div>
+              <p>
+                <b>Character:</b> {cast.character}
+              </p>
+              <p>
+                <b>Name:</b> {cast.original_name}
+              </p>
+            </div>
+          </CardItem>
         ))}
-      </Galery>
+      </CardSet>
     </div>
   );
 };

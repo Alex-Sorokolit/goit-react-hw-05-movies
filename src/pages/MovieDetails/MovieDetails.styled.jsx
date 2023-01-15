@@ -8,6 +8,7 @@ export const CardWrapper = styled.div`
   flex-direction: column;
   align-items: center;
   background: #0d1117;
+
   @media screen and (min-width: 768px) {
     flex-direction: row;
     align-items: start;
