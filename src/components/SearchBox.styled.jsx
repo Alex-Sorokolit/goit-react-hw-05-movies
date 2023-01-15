@@ -34,13 +34,6 @@ export const SearchButton = styled.button`
   }
 `;
 
-// export const SearchBattonLabel = styled.span`
-//   font-size: 25px;
-//   padding: 0;
-//   border: 0;
-//   color: black;
-// `;
-
 export const SearchInput = styled.input`
   display: inline-block;
   width: 100%;

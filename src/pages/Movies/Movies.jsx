@@ -10,7 +10,8 @@ import { save, load } from 'components/localStorageMethods';
 import { Main, ImageWrapper, Cover } from './Movies.styled';
 
 const Movies = () => {
-  const [movies, setMovies] = useState(load('movies'));
+  const LocalData = load('movies');
+  const [movies, setMovies] = useState(LocalData ? LocalData : []);
   const [query, setQuery] = useState(''); // на запит передаємо query а не queryParams щоб запит відбувався тільки при submit
   const [page, setPage] = useState(1);
   const [searchParams, setSearchParams] = useSearchParams(); // записує searchQuery в url
