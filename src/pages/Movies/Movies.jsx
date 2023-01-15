@@ -84,6 +84,9 @@ const Movies = () => {
     save('movies', movies);
   }
 
+  if (!movies) {
+    return null;
+  }
   return (
     <Main>
       <SearchBox
@@ -93,25 +96,24 @@ const Movies = () => {
       />
 
       <CardSet>
-        {movies.length > 0 &&
-          movies.map(movie => (
-            <CardItem key={movie.id}>
-              <StyledLink to={`${movie.id}`} state={{ from: location }}>
-                {/* <p>{movie.original_title}</p> */}
-                <ImageWrapper>
-                  <Cover
-                    src={
-                      movie.poster_path !== null
-                        ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                        : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
-                    }
-                    width="200"
-                    alt={movie.original_title}
-                  ></Cover>
-                </ImageWrapper>
-              </StyledLink>
-            </CardItem>
-          ))}
+        {movies.map(movie => (
+          <CardItem key={movie.id}>
+            <StyledLink to={`${movie.id}`} state={{ from: location }}>
+              {/* <p>{movie.original_title}</p> */}
+              <ImageWrapper>
+                <Cover
+                  src={
+                    movie.poster_path !== null
+                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
+                      : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
+                  }
+                  width="200"
+                  alt={movie.original_title}
+                ></Cover>
+              </ImageWrapper>
+            </StyledLink>
+          </CardItem>
+        ))}
       </CardSet>
 
       {movies.length > 0 && total > movies.length && (
