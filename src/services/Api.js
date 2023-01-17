@@ -54,4 +54,15 @@ export async function getReviews(movieId) {
   }
 }
 
+export const posterMovieUrl = url => {
+  return url !== null
+    ? `https://image.tmdb.org/t/p/w500/${url}`
+    : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png';
+};
+
+export const actorImgUrl = url => {
+  return url !== null
+    ? `https://image.tmdb.org/t/p/w500/${url}`
+    : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png';
+};
 // повідомлення про помилки

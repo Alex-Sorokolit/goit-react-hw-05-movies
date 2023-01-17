@@ -4,6 +4,7 @@ import { StyledLink } from '../../components/Link.styled';
 import { CardSet } from 'components/CardSet.styled';
 import { Main } from './Home.styled';
 import { useLocation } from 'react-router-dom';
+import { posterMovieUrl } from '../../services/Api';
 
 const Home = () => {
   const [error, setError] = useState(null);
@@ -50,7 +51,7 @@ const Home = () => {
             <StyledLink to={`movies/${trend.id}`} state={{ from: location }}>
               {/* <p>{trend.original_title}</p> */}
               <img
-                src={`https://image.tmdb.org/t/p/w500/${trend.poster_path}`}
+                src={posterMovieUrl(trend.poster_path)}
                 width="200"
                 alt={trend.original_title}
               ></img>

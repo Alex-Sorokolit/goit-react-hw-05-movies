@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useLocation, useParams } from 'react-router-dom';
 import { getMovieDetails } from 'services/Api';
 import { Outlet } from 'react-router-dom';
+import { actorImgUrl } from 'services/Api';
 import {
   LinkBtn,
   ListItem,
@@ -35,7 +36,6 @@ const MovieDetails = () => {
   }
   const { poster_path, original_title, vote_average, overview, genres } =
     movieData;
-  // console.log(movieData);
 
   return (
     <main>
@@ -43,11 +43,7 @@ const MovieDetails = () => {
         <CardWrapper>
           {movieData && (
             <img
-              src={
-                poster_path !== null
-                  ? `https://image.tmdb.org/t/p/w500/${poster_path}`
-                  : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
-              }
+              src={actorImgUrl(poster_path)}
               width="300"
               alt={original_title}
             ></img>

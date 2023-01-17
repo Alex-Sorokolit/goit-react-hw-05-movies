@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 import Button from 'components/LoadMoreBtn';
 import { save, load } from 'components/localStorageMethods';
 import { Main, ImageWrapper, Cover } from './Movies.styled';
+import { posterMovieUrl } from 'services/Api';
 
 const Movies = () => {
   const LocalData = load('movies');
@@ -103,11 +104,7 @@ const Movies = () => {
               {/* <p>{movie.original_title}</p> */}
               <ImageWrapper>
                 <Cover
-                  src={
-                    movie.poster_path !== null
-                      ? `https://image.tmdb.org/t/p/w500/${movie.poster_path}`
-                      : 'https://cdn.pixabay.com/photo/2013/07/12/12/01/film-145099_960_720.png'
-                  }
+                  src={posterMovieUrl(movie.poster_path)}
                   width="200"
                   alt={movie.original_title}
                 ></Cover>
