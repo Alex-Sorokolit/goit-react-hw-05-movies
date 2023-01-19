@@ -17,10 +17,6 @@ const Movies = () => {
   const [searchParams] = useSearchParams('');
   const location = useLocation();
 
-  // useEffect(() => {
-  //   setPage(1);
-  // }, [setPage]);
-
   useEffect(() => {
     console.log('mount');
     const queryParams = searchParams.get('query') ?? ''; // отримує запит із url
