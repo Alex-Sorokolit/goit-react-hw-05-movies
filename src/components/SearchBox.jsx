@@ -1,4 +1,7 @@
+// import { useState } from 'react';
 import { CgSearch } from 'react-icons/cg';
+import { useSearchParams } from 'react-router-dom';
+import { toast } from 'react-hot-toast';
 import {
   SearchWrapper,
   SearchForm,
@@ -6,19 +9,37 @@ import {
   SearchInput,
 } from './SearchBox.styled';
 
-export const SearchBox = ({ value, onSubmit, onChange }) => {
+export const SearchBox = ({ onSubmit }) => {
+  const [searchParams, setSearchParams] = useSearchParams(); // записує searchQuery в url
+
+  function handleSubmit(event) {
+    event.preventDefault();
+    const query = event.target.search.value.trim().toLowerCase();
+    // console.log(query);
+    if (query === '') {
+      toast.error('Напишіть назву фільму в поле пошуку');
+      return;
+    }
+
+    if (searchParams.get('query') === query) {
+      toast.error(`Проявляйте креатив, пришіть різні запити`);
+      return;
+    }
+    setSearchParams(query !== '' ? { query } : {});
+    onSubmit();
+  }
+
   return (
     <SearchWrapper>
-      <SearchForm onSubmit={onSubmit}>
+      <SearchForm onSubmit={handleSubmit}>
         <SearchInput
           type="text"
-          value={value}
+          name="search"
           autoComplete="off"
           autoFocus
           placeholder="Search movies"
-          onChange={event => onChange(event.target.value)}
         />
-        <SearchButton type="submit" onClick={onSubmit}>
+        <SearchButton type="submit">
           <span>
             <CgSearch />
           </span>

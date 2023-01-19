@@ -5,27 +5,29 @@ import { StyledLink } from 'components/Link.styled';
 import { CardSet, CardItem } from 'components/CardSet.styled';
 import { useLocation, useSearchParams } from 'react-router-dom';
 import { toast } from 'react-hot-toast';
-import Button from 'components/LoadMoreBtn';
-import { save, load } from 'components/localStorageMethods';
+import Button from 'components/PageBtn';
 import { Main, ImageWrapper, Cover } from './Movies.styled';
 import { posterMovieUrl } from 'services/Api';
+import { useSessionStorage } from 'hooks/useSessionStorage';
 
 const Movies = () => {
-  const LocalData = load('movies');
-  const [movies, setMovies] = useState(LocalData ? LocalData : []);
-  const [query, setQuery] = useState(''); // на запит передаємо query а не queryParams щоб запит відбувався тільки при submit
-  const [page, setPage] = useState(1);
-  const [searchParams, setSearchParams] = useSearchParams(); // записує searchQuery в url
-  const queryParams = searchParams.get('query') ?? ''; // отримує запит із url
-  const [total, setTotal] = useState(0);
+  const [movies, setMovies] = useState([]);
+  const [totalPages, setTotalPages] = useState(1);
+  const [page, setPage] = useSessionStorage('page');
+  const [searchParams] = useSearchParams('');
   const location = useLocation();
 
-  // якщо query змінилось, робимо запит
   useEffect(() => {
-    async function Fetch(query, page) {
+    const queryParams = searchParams.get('query') ?? ''; // отримує запит із url
+    if (!queryParams) {
+      return;
+    }
+
+    async function Fetch() {
       try {
-        const movieData = await getSearchMovie(query, page);
-        const { results, total_results } = movieData;
+        const movieData = await getSearchMovie(queryParams, page);
+        const { results, total, totalPages } = movieData;
+
         // Перевірка чи є результати пошуку
         if (results === 0) {
           toast.error('За вашим запитом немає результатів');
@@ -33,70 +35,40 @@ const Movies = () => {
         }
 
         // запис даних у стейт
-        setMovies(prevMovies => [...prevMovies, ...results]);
-
-        // console.log(movies);
-
-        setTotal(total_results);
+        setMovies(results);
+        setTotalPages(totalPages);
 
         // Показуємо кількість результатів при першому запиті
         if (page === 1) {
-          toast.success(`Знайдено ${total_results} фільмів`);
+          toast.success(`Знайдено ${total} фільмів`);
         }
       } catch (error) {
         console.log(error);
       }
     }
 
-    if (query !== '') {
-      Fetch(query, page);
-    }
-  }, [query, page]);
+    Fetch();
+  }, [page, searchParams]);
 
-  // отримує дані з інпута і записує в url
-  const handleInputChange = value => {
-    setSearchParams(value !== '' ? { query: value } : {});
-  };
-
-  // при sabmit оновлює query
-  const onSubmit = event => {
-    event.preventDefault();
-    // console.log(queryParams);
-
-    if (queryParams === '') {
-      toast.error('Напишіть назву фільму в поле пошуку');
-      return;
-    }
-
-    if (queryParams === query) {
-      toast.error(`Проявляйте креатив, пришіть різні запити`);
-      return;
-    }
-
-    setQuery(queryParams);
+  function onSubmit() {
     setMovies([]);
     setPage(1);
+  }
+  // Кнопки пагінації
+  const nextPage = () => {
+    setPage(prevPage => prevPage + 1);
   };
 
-  const loadMore = () => {
-    setPage(prevPage => prevPage + 1);
-    // console.log(page);
+  const prevPage = () => {
+    setPage(prevPage => prevPage - 1);
   };
-  if (movies !== []) {
-    save('movies', movies);
-  }
 
   if (!movies) {
     return null;
   }
   return (
     <Main>
-      <SearchBox
-        onSubmit={onSubmit}
-        value={queryParams}
-        onChange={handleInputChange}
-      />
-
+      <SearchBox onSubmit={onSubmit} />
       <CardSet>
         {movies.map(movie => (
           <CardItem key={movie.id}>
@@ -114,13 +86,20 @@ const Movies = () => {
         ))}
       </CardSet>
 
-      {movies.length > 0 && total > movies.length && (
-        <Button type="button" loadMore={loadMore} />
-      )}
+      <div style={{ display: 'flex' }}>
+        {page >= 2 && (
+          <Button type="button" setPage={prevPage}>
+            Previous Page
+          </Button>
+        )}
+        {page < totalPages && (
+          <Button type="button" setPage={nextPage}>
+            Next Page
+          </Button>
+        )}
+      </div>
     </Main>
   );
 };
 
 export default Movies;
-
-// При поверненні повинен бути список фільмів

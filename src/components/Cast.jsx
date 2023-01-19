@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getCast } from 'services/Api';
 import { CardSet, CardItem } from './CardSet.styled';
+import { actorImgUrl } from 'services/Api';
 
 export const Cast = () => {
   const { movieId } = useParams();
@@ -23,8 +24,7 @@ export const Cast = () => {
   if (!castData) {
     return null;
   }
-  // const { profile_path, character, original_name } = castData;
-  // console.log(castData);
+
   return (
     <div>
       <CardSet>
@@ -32,11 +32,7 @@ export const Cast = () => {
           <CardItem key={cast.id}>
             <div>
               <img
-                src={
-                  cast.profile_path !== null
-                    ? `https://image.tmdb.org/t/p/w500/${cast.profile_path}`
-                    : 'https://cdn.pixabay.com/photo/2014/04/03/11/50/drama-312318_960_720.png'
-                }
+                src={actorImgUrl(cast.profile_path)}
                 alt={cast.character}
                 width={200}
               ></img>
@@ -56,4 +52,4 @@ export const Cast = () => {
   );
 };
 
-// додати заглушку на актора
+// запит за актором (показати всі фільми в яких знімався)

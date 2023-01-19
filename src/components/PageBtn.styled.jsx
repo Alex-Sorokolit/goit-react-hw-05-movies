@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-export const LoadMore = styled.button`
+export const PageBtn = styled.button`
   display: block;
   margin-top: 20px;
   margin-bottom: 20px;
@@ -16,5 +16,8 @@ export const LoadMore = styled.button`
   &:hover {
     background: orangered;
     color: white;
+  }
+  &:not(:last-child) {
+    margin-right: 10px;
   }
 `;

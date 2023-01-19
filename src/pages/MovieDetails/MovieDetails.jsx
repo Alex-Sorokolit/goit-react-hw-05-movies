@@ -15,19 +15,19 @@ const MovieDetails = () => {
   const { movieId } = useParams();
   const [movieData, setMovieData] = useState(null);
   const location = useLocation();
-  const backLinkHref = location.state?.from ?? '/';
+  const backLinkHref = location.state.from ?? '/';
 
   useEffect(() => {
-    async function Fetch(query) {
+    async function Fetch() {
       try {
-        const movieData = await getMovieDetails(query);
+        const movieData = await getMovieDetails(movieId);
         setMovieData(movieData);
       } catch (error) {
         console.log(error);
       }
     }
     if (movieId) {
-      Fetch(movieId);
+      Fetch();
     }
   }, [movieId]);
 
@@ -77,10 +77,14 @@ const MovieDetails = () => {
             <LinkBtn to={backLinkHref}>Go Back</LinkBtn>
           </ListItem>
           <ListItem>
-            <LinkBtn to={'cast'}>Cast</LinkBtn>
+            <LinkBtn to={'cast'} state={{ from: backLinkHref }}>
+              Cast
+            </LinkBtn>
           </ListItem>
           <ListItem>
-            <LinkBtn to={'reviews'}>Reviews</LinkBtn>
+            <LinkBtn to={'reviews'} state={{ from: backLinkHref }}>
+              Reviews
+            </LinkBtn>
           </ListItem>
         </ul>
         <Outlet />

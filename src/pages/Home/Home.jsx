@@ -3,8 +3,8 @@ import { getTrending } from '../../services/Api';
 import { StyledLink } from '../../components/Link.styled';
 import { CardSet } from 'components/CardSet.styled';
 import { Main } from './Home.styled';
-import { useLocation } from 'react-router-dom';
 import { posterMovieUrl } from '../../services/Api';
+import { useLocation } from 'react-router-dom';
 
 const Home = () => {
   const [error, setError] = useState(null);
@@ -67,5 +67,3 @@ const Home = () => {
 };
 
 export default Home;
-
-// Асинхронне завантаження коду
