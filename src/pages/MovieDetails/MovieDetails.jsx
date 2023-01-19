@@ -46,7 +46,7 @@ const MovieDetails = () => {
               src={actorImgUrl(poster_path)}
               width="300"
               alt={original_title}
-            ></img>
+            />
           )}
           <div
             className="movie__info"

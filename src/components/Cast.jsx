@@ -35,7 +35,7 @@ export const Cast = () => {
                 src={actorImgUrl(cast.profile_path)}
                 alt={cast.character}
                 width={200}
-              ></img>
+              />
             </div>
             <div>
               <p>

@@ -57,7 +57,6 @@ export async function getCast(movieId) {
   try {
     const response = await axios.get(`movie/${movieId}/credits?api_key=${key}`);
 
-    console.log(response.data.cast);
     // Забираємо тільки ті дані які потрібні
     const filteredCast = response.data.cast.map(
       ({ id, profile_path, character, original_name }) => ({
@@ -77,7 +76,7 @@ export async function getCast(movieId) {
 export async function getReviews(movieId) {
   try {
     const response = await axios.get(`movie/${movieId}/reviews?api_key=${key}`);
-    console.log(response.data.results);
+
     // Забираємо тільки ті дані які потрібні
     const filteredReviews = response.data.results.map(
       ({ id, author, content }) => ({

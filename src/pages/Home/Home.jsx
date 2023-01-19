@@ -54,7 +54,7 @@ const Home = () => {
                 src={posterMovieUrl(trend.poster_path)}
                 width="200"
                 alt={trend.original_title}
-              ></img>
+              />
             </StyledLink>
           </li>
         ))}

@@ -15,7 +15,7 @@ export const SearchBox = ({ onSubmit }) => {
   function handleSubmit(event) {
     event.preventDefault();
     const query = event.target.search.value.trim().toLowerCase();
-    // console.log(query);
+
     if (query === '') {
       toast.error('Напишіть назву фільму в поле пошуку');
       return;

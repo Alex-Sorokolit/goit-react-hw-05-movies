@@ -17,7 +17,12 @@ const Movies = () => {
   const [searchParams] = useSearchParams('');
   const location = useLocation();
 
+  // useEffect(() => {
+  //   setPage(1);
+  // }, [setPage]);
+
   useEffect(() => {
+    console.log('mount');
     const queryParams = searchParams.get('query') ?? ''; // отримує запит із url
     if (!queryParams) {
       return;
@@ -46,8 +51,8 @@ const Movies = () => {
         console.log(error);
       }
     }
-
     Fetch();
+    return console.log('unmount');
   }, [page, searchParams]);
 
   function onSubmit() {
@@ -79,7 +84,7 @@ const Movies = () => {
                   src={posterMovieUrl(movie.poster_path)}
                   width="200"
                   alt={movie.original_title}
-                ></Cover>
+                />
               </ImageWrapper>
             </StyledLink>
           </CardItem>
@@ -87,7 +92,7 @@ const Movies = () => {
       </CardSet>
 
       <div style={{ display: 'flex' }}>
-        {page >= 2 && (
+        {movies.length !== 0 && page >= 2 && (
           <Button type="button" setPage={prevPage}>
             Previous Page
           </Button>
