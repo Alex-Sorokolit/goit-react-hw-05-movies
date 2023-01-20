@@ -47,7 +47,15 @@ export async function getSearchMovie(searchQuery, page) {
 export async function getMovieDetails(movieId) {
   try {
     const response = await axios.get(`movie/${movieId}?api_key=${key}`);
-    return response.data;
+    const { poster_path, original_title, vote_average, overview, genres } =
+      response.data;
+    return {
+      poster_path,
+      original_title,
+      vote_average,
+      overview,
+      genres,
+    };
   } catch (error) {
     console.log(error);
   }
