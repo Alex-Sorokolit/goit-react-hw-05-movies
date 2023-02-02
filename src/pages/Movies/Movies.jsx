@@ -16,7 +16,7 @@ const Movies = () => {
   const [page, setPage] = useSessionStorage('page');
   const [searchParams] = useSearchParams('');
   const location = useLocation();
-
+  console.log(useSessionStorage('page'));
   useEffect(() => {
     console.log('mount');
     const queryParams = searchParams.get('query') ?? ''; // отримує запит із url
